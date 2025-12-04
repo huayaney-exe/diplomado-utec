@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3: Desarrollo y Tecnología | UTEC Posgrado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #000;
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #fff;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #eee;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+        }
+
+        .logo img {
+            width: 140px;
+            height: auto;
+        }
+
+        .programa-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .programa-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 15px;
+        }
+
+        .nav-menu a {
+            color: #000;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: #06E1FF;
+        }
+
+        .nav-menu a.active {
+            color: #06E1FF;
+            font-weight: 500;
+        }
+
+        .cta-sidebar {
+            margin-top: auto;
+            background: #06E1FF;
+            color: #000;
+            padding: 18px 25px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cta-sidebar:hover {
+            background: #00c8e6;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 50px 60px;
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .hero-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .hero-text p {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .hero-text .arrow-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .hero-text .arrow-item::before {
+            content: "→";
+            margin-right: 10px;
+            color: #000;
+        }
+
+        .hero-video {
+            position: relative;
+            background: #1a1a2e;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+
+        .hero-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background: #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .play-button::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 20px solid #fff;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+
+        .module-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #06E1FF;
+            color: #000;
+            padding: 8px 15px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Two Column Section */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .column h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .column .arrow-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .column .arrow-item::before {
+            content: "→";
+            margin-right: 12px;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        /* Sessions Section */
+        .sessions-section {
+            margin-bottom: 60px;
+        }
+
+        .sessions-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .session-card {
+            border: 1px solid #eee;
+            padding: 25px;
+            transition: border-color 0.2s;
+        }
+
+        .session-card:hover {
+            border-color: #06E1FF;
+        }
+
+        .session-number {
+            font-size: 12px;
+            color: #06E1FF;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .session-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .session-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Flow Section */
+        .flow-section {
+            background: #f8f8f8;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .flow-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .flow-items {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-item {
+            background: #fff;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid #ddd;
+        }
+
+        .flow-arrow {
+            color: #06E1FF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Footer Info */
+        .footer-info {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 30px;
+            }
+            .hero-section,
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+            .flow-items {
+                flex-direction: column;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logo-utec-color-v2.svg" alt="UTEC Posgrado">
+            </div>
+
+            <div class="programa-label">Programa</div>
+            <div class="programa-title">PRODUCT MANAGEMENT</div>
+
+            <ul class="nav-menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#descripcion" class="active">Descripcion</a></li>
+                <li><a href="#sesiones">Sesiones</a></li>
+                <li><a href="#flujo">Secuencia</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section" id="inicio">
+                <div class="hero-text">
+                    <h1>El modulo tiene el proposito que puedas:</h1>
+                    <div class="arrow-item">
+                        Convertir los fundamentos de producto en documentacion ejecutable que cualquier equipo tecnico pueda implementar.
+                    </div>
+                    <div class="arrow-item">
+                        Entender que es AI y como acelera el delivery de productos digitales sin reemplazar los fundamentos.
+                    </div>
+                    <div class="arrow-item">
+                        Construir prototipos funcionales con herramientas no-code y validarlos con usuarios reales.
+                    </div>
+                </div>
+                <div class="hero-video">
+                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <div class="play-button"></div>
+                    </div>
+                    <div class="module-badge">MODULO 3: DESARROLLO Y TECNOLOGIA</div>
+                </div>
+            </section>
+
+            <!-- Two Columns -->
+            <section class="two-columns" id="descripcion">
+                <div class="column">
+                    <h2>Dirigido a:</h2>
+                    <div class="arrow-item">
+                        Gerentes y subgerentes de las areas de marketing, comercial, finanzas y tecnologia.
+                    </div>
+                    <div class="arrow-item">
+                        Product managers, product owners, analistas de producto, analistas de ventas, jefes de marca y category managers de diversas industrias.
+                    </div>
+                    <div class="arrow-item">
+                        Profesionales interesados en convertir estrategias de producto en prototipos tangibles y medibles.
+                    </div>
+                </div>
+                <div class="column">
+                    <h2>En este modulo:</h2>
+                    <div class="arrow-item">
+                        Documentaras tu producto en un PRD profesional, listo para entregar a equipos de desarrollo.
+                    </div>
+                    <div class="arrow-item">
+                        Aprenderas a usar AI como framework de aceleracion en la fase de Delivery, conectando con Discovery y Strategy.
+                    </div>
+                    <div class="arrow-item">
+                        Construiras un prototipo funcional con Bubble/Webflow y lo validaras con Maze y heatmaps.
+                    </div>
+                    <div class="arrow-item">
+                        Presentaras tu producto con metricas reales, preparandote para el pitch final del programa.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sessions Section -->
+            <section class="sessions-section" id="sesiones">
+                <h2>Plan de estudio del modulo:</h2>
+                <div class="sessions-grid">
+                    <div class="session-card">
+                        <div class="session-number">SESION 1</div>
+                        <div class="session-title">Documentacion de Producto (PRD)</div>
+                        <div class="session-desc">Anclar todo lo aprendido en un documento ejecutable. Que es un PRD, como construirlo y validarlo entre pares.</div>
+                    </div>
+                    <div class="session-card">
+                        <div class="session-number">SESION 2</div>
+                        <div class="session-title">AI como Framework de Delivery</div>
+                        <div class="session-desc">Fundamentos de AI, las 3 esferas de producto y como AI acelera la construccion sin reemplazar fundamentos.</div>
+                    </div>
+                    <div class="session-card">
+                        <div class="session-number">SESION 3</div>
+                        <div class="session-title">Planificacion de Implementacion</div>
+                        <div class="session-desc">Feedback tecnico del PRD, documento de requerimientos, seleccion de stack y plan de implementacion.</div>
+                    </div>
+                    <div class="session-card">
+                        <div class="session-number">SESION 4</div>
+                        <div class="session-title">Implementacion Guiada</div>
+                        <div class="session-desc">Workshop practico de construccion del prototipo funcional con soporte en vivo.</div>
+                    </div>
+                    <div class="session-card">
+                        <div class="session-number">SESION 5</div>
+                        <div class="session-title">Medicion y Validacion</div>
+                        <div class="session-desc">Setup de Maze y heatmaps, ejecucion de pruebas con usuarios reales y analisis de resultados.</div>
+                    </div>
+                    <div class="session-card">
+                        <div class="session-number">SESION 6</div>
+                        <div class="session-title">Demo Day</div>
+                        <div class="session-desc">Presentacion de productos por equipos con metricas, hallazgos y aprendizajes.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flow Section -->
+            <section class="flow-section" id="flujo">
+                <h2>Secuencia del modulo:</h2>
+                <div class="flow-items">
+                    <div class="flow-item">PRD</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">AI Framework</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">Requerimientos</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">Implementacion</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">Medicion</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">Demo</div>
+                </div>
+            </section>
+
+            <!-- Footer Info -->
+            <section class="footer-info">
+                <p>6 sesiones practicas | Martes y jueves 7pm | Febrero - Abril 2025</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
